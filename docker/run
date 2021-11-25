@@ -1,0 +1,28 @@
+#!/bin/bash
+
+IMAGE_NAME="ekuthon:2021"
+CONTAINER_NAME="ekuthon_2021"
+
+if [ ! $(docker ps --quiet --filter name=$CONTAINER_NAME) ]; then
+    xhost +local:docker
+    echo "Running container"
+    docker run -it --rm \
+        --privileged \
+        --network host \
+        --env DISPLAY \
+        --volume $HOME/.bash_history:/home/robotica/.bash_history:rw \
+        --volume $HOME/.Xauthority:/home/robotica/.Xauthority:rw \
+        --volume /tmp/.X11-unix:/tmp/.X11-unix:rw \
+        --user $(id -u $USER):$(id -g $USER) \
+        --volume $HOME/catkin_ws/src:/home/robotica/catkin_ws/src:rw \
+        --volume $HOME/catkin_ws/.ekuthon/build:/home/robotica/catkin_ws/build:rw \
+        --volume $HOME/catkin_ws/.ekuthon/devel:/home/robotica/catkin_ws/devel:rw \
+        --gpus all \
+        --workdir /home/robotica \
+        --name $CONTAINER_NAME \
+        $IMAGE_NAME bash
+    xhost -local:docker
+else
+    echo "Container is already running, another terminal in the same container is opened"
+    docker exec -it --rm $CONTAINER_NAME bash
+fi
