@@ -29,7 +29,7 @@ class WalkingSimulation(object):
 
     def __init_simulator(self):
         robot_start_pos = [0, 0, self.robot_height]
-        p.connect(p.GUI)
+        p.connect(p.DIRECT)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
         p.setAdditionalSearchPath(os.path.dirname(os.path.realpath(__file__)))
         p.resetSimulation()
@@ -69,7 +69,7 @@ class WalkingSimulation(object):
         p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
 
         self.boxId = p.loadURDF(
-            "urdf/mini_cheetah.urdf", robot_start_pos, useFixedBase=False)
+            "urdf/mini_cheetah.urdf", robot_start_pos, useFixedBase=False, flags=p.URDF_USE_SELF_COLLISION|p.URDF_USE_SELF_COLLISION_EXCLUDE_ALL_PARENTS)
         p.changeDynamics(self.boxId, 3, spinningFriction=self.spinningFriction)
         p.changeDynamics(self.boxId, 7, spinningFriction=self.spinningFriction)
         p.changeDynamics(self.boxId, 11, spinningFriction=self.spinningFriction)

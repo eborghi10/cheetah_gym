@@ -4,6 +4,7 @@ import argparse
 from copy import deepcopy
 import torch
 import gym
+from gym import wrappers
 
 from cheetah_gym.envs.normalized_env import NormalizedEnv
 from cheetah_gym.agents.evaluator import Evaluator
@@ -84,7 +85,6 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
         if step <= 100: #Warmup
             action = agent.random_action()
         else:
-            import pdb; pdb.set_trace()
             action = agent.select_action(observation)
 
         # env response with next_observation, reward, terminate_info
@@ -101,8 +101,10 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
         # # [optional] evaluate
         if evaluate is not None and validate_steps > 0 and step % validate_steps == 0:
             policy = lambda x: agent.select_action(x, decay_epsilon=False)
-            validate_reward = evaluate(env, policy, debug=False, visualize=False)
+            monitor_env = wrappers.Monitor(env, output + '/video/' + str(step), video_callable=lambda episode_id: True, force=True)
+            validate_reward = evaluate(monitor_env, policy, debug=False, visualize=False)
             if debug: prYellow(f'[Evaluate] Step_{step:07d}: mean_reward:{validate_reward}')
+            monitor_env.close()
 
         # [optional] save intermideate model
         if episode % int(5) == 0:
@@ -148,7 +150,7 @@ if __name__ == "__main__":
 
     seed = 42
     validate_steps = 2000
-    max_episode_length = 500
+    max_episode_length = 500 * 15
     validate_episodes = 20
     train_iter = 200000
 

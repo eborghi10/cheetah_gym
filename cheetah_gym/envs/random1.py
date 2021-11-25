@@ -13,7 +13,7 @@ class Random1Env(gym.Env):
         self.sim = WalkingSimulation()
         self.action_space = gym.spaces.Box(low=-self.MIN_MAX_TORQUE,
                                            high=self.MIN_MAX_TORQUE,
-                                           shape=(self.NUM_JOINTS, 1),
+                                           shape=(self.NUM_JOINTS, ),
                                            dtype=np.float32)
         high = np.inf * np.ones([37], dtype=np.float32)
         self.observation_space = gym.spaces.Box(-high, high, dtype=np.float32)
