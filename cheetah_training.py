@@ -5,6 +5,11 @@ import random
 
 env = gym.make('random1-v0')
 
+env.reset()
+while (True):
+    env.step([random.uniform(0., 2.)] * 12)
+    pass
+
 action_space_size = env.action_space.n
 state_space_size = env.observation_space.n
 
