@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import numpy as np
 import os
 import pybullet as p
 import pybullet_data
@@ -163,3 +164,32 @@ class WalkingSimulation(object):
         contact_points = p.getContactPoints(self.boxId)
 
         return imu_data, leg_data, base_pose[0], contact_points
+
+    def render(self):
+        cam_dist = 3
+        cam_yaw = 0
+        cam_pitch = -30
+        render_width = 320
+        render_height = 240
+
+        base_pos = [0, 0, 0]
+        view_matrix = p.computeViewMatrixFromYawPitchRoll(
+            cameraTargetPosition=base_pos,
+            distance=cam_dist,
+            yaw=cam_yaw,
+            pitch=cam_pitch,
+            roll=0,
+            upAxisIndex=2)
+        proj_matrix = p.computeProjectionMatrixFOV(
+            fov=60,
+            aspect=float(render_width)/render_height,
+            nearVal=0.1,
+            farVal=100.0)
+        (_, _, px, _, _) = p.getCameraImage(
+            width=render_width,
+            height=render_height,
+            viewMatrix=view_matrix,
+            projectionMatrix=proj_matrix,
+            renderer=p.ER_BULLET_HARDWARE_OPENGL)
+        rgb_array = np.array(px)
+        rgb_array = rgb_array[:, :, :3]

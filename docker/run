@@ -24,5 +24,5 @@ if [ ! $(docker ps --quiet --filter name=$CONTAINER_NAME) ]; then
     xhost -local:docker
 else
     echo "Container is already running, another terminal in the same container is opened"
-    docker exec -it --rm $CONTAINER_NAME bash
+    docker exec -it $CONTAINER_NAME bash
 fi

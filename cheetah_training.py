@@ -1,13 +1,14 @@
 import gym
+import gym.spaces
 import cheetah_gym
 import numpy as np
 import random
 
 env = gym.make('random1-v0')
-
+# state_space = gym.Box(low=np.array([-1.0, -2.0]), high=np.array([2.0, 4.0]), shape=(12,1) ,dtype=np.float32)
 env.reset()
 while (True):
-    env.step([random.uniform(0., 2.)] * 12)
+    env.step(env.action_space.sample())
     pass
 
 action_space_size = env.action_space.n
@@ -56,7 +57,7 @@ for episode in range(num_episodes):
         state = new_state
         rewards_current_episode += reward
 
-        if done == True:
+        if done :
             break
 
     # Exploration rate decay
