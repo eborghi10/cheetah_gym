@@ -7,7 +7,7 @@ ubuntu_18:
 		--build-arg GROUP_ID=$(shell id -g) \
 		--build-arg UBUNTU=18 \
 		-f ubuntu.dockerfile \
-		-t robotica:ubuntu_18 \
+		-t ekuthon:ubuntu_18 \
 		.
 
 .PHONY: ubuntu_20
@@ -17,7 +17,7 @@ ubuntu_20:
 		--build-arg GROUP_ID=$(shell id -g) \
 		--build-arg UBUNTU=20 \
 		-f ubuntu.dockerfile \
-		-t robotica:ubuntu_20 \
+		-t ekuthon:ubuntu_20 \
 		.
 
 # ROS 1 images
@@ -28,7 +28,7 @@ ros1_noetic: ubuntu_20
 		--build-arg UBUNTU=20 \
 		--build-arg ROS=noetic \
 		-f ros1.dockerfile \
-		-t robotica:ros1_noetic \
+		-t ekuthon:ros1_noetic \
 		.
 
 

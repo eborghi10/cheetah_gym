@@ -1,5 +1,4 @@
 cmake
-coinor-libipopt-dev
 default-jdk
 libeigen3-dev
 libgl1-mesa-dev
@@ -15,5 +14,3 @@ mesa-common-dev
 python3-pcl
 python3-pip
 xterm
-
-ros-*-teleop-twist-keyboard
