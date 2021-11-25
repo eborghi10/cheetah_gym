@@ -25,7 +25,7 @@ class Evaluator(object):
             observation = env.reset()
             episode_steps = 0
             episode_reward = 0.
-                
+
             assert observation is not None
 
             # start episode
@@ -37,7 +37,7 @@ class Evaluator(object):
                 observation, reward, done, info = env.step(action)
                 if self.max_episode_length and episode_steps >= self.max_episode_length -1:
                     done = True
-                
+
                 if visualize:
                     env.render(mode='human')
 
@@ -59,7 +59,7 @@ class Evaluator(object):
 
         y = np.mean(self.results, axis=0)
         error=np.std(self.results, axis=0)
-                    
+
         x = range(0,self.results.shape[1]*self.interval,self.interval)
         fig, ax = plt.subplots(1, 1, figsize=(6, 5))
         plt.xlabel('Timestep')
