@@ -69,7 +69,7 @@ class WalkingSimulation(object):
         p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
 
         self.boxId = p.loadURDF(
-            "urdf/mini_cheetah.urdf", robot_start_pos, useFixedBase=False, flags=p.URDF_USE_SELF_COLLISION|p.URDF_USE_SELF_COLLISION_EXCLUDE_ALL_PARENTS)
+            "urdf/mini_cheetah.urdf", robot_start_pos, useFixedBase=False, flags=p.URDF_USE_SELF_COLLISION)
         p.changeDynamics(self.boxId, 3, spinningFriction=self.spinningFriction)
         p.changeDynamics(self.boxId, 7, spinningFriction=self.spinningFriction)
         p.changeDynamics(self.boxId, 11, spinningFriction=self.spinningFriction)
@@ -95,8 +95,10 @@ class WalkingSimulation(object):
         # set tau to simulator
         p.setJointMotorControlArray(bodyUniqueId=self.boxId,
                                     jointIndices=self.motor_id_list,
-                                    controlMode=p.TORQUE_CONTROL,
-                                    forces=tau)
+                                    controlMode=p.POSITION_CONTROL,
+                                    forces=[2.5]*len(self.motor_id_list),
+                                    targetPositions=tau)
+        # import pdb; pdb.set_trace()
 
         p.stepSimulation()
 

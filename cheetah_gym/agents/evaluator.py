@@ -67,3 +67,4 @@ class Evaluator(object):
         ax.errorbar(x, y, yerr=error, fmt='-o')
         plt.savefig(fn+'.png')
         savemat(fn+'.mat', {'reward':self.results})
+        plt.close(fig)
