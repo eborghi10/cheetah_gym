@@ -132,16 +132,16 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
             episode += 1
             last_step = step
 
-# def test(num_episodes, agent, env, evaluate, model_path, visualize=True, debug=False):
+def test(num_episodes, agent, env, evaluate, model_path, visualize=True, debug=False):
 
-#     agent.load_weights(model_path)
-#     agent.is_training = False
-#     agent.eval()
-#     policy = lambda x: agent.select_action(x, decay_epsilon=False)
+    agent.load_weights(model_path)
+    agent.is_training = False
+    agent.eval()
+    policy = lambda x: agent.select_action(x, decay_epsilon=False)
 
-#     for i in range(num_episodes):
-#         validate_reward = evaluate(env, policy, debug=debug, visualize=visualize, save=False)
-#         if debug: prYellow('[Evaluate] #{}: mean_reward:{}'.format(i, validate_reward))
+    for i in range(num_episodes):
+        validate_reward = evaluate(env, policy, debug=debug, visualize=visualize, save=False)
+        if debug: prYellow('[Evaluate] #{}: mean_reward:{}'.format(i, validate_reward))
 
 
 if __name__ == "__main__":
@@ -167,3 +167,6 @@ if __name__ == "__main__":
 
     train(train_iter, agent, env, evaluate,
         validate_steps, "./cheetah_gym/agents/weights", max_episode_length=max_episode_length, debug=True)
+
+    # test(validate_episodes, agent, env, evaluate, "./cheetah_gym/agents/weights",
+    #     visualize=False, debug=True)

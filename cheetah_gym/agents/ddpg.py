@@ -23,8 +23,8 @@ class DDPG(object):
 
         # Create Actor and Critic Network TODO Make this a proper model
         net_cfg = {
-            'hidden1':126,
-            'hidden2':126,
+            'hidden1':512,
+            'hidden2':512,
             'init_w':0.003
         }
         self.actor = Actor(self.nb_states, self.nb_actions, **net_cfg)

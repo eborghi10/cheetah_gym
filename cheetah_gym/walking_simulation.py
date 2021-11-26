@@ -12,7 +12,7 @@ class WalkingSimulation(object):
     def __init__(self):
         self.terrain = "random1"
         self.get_last_vel = [0] * 3
-        self.robot_height = 0.30
+        self.robot_height = 0.40
         self.motor_id_list = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14]
         self.init_new_pos = [0.0, -0.8, 1.6, 0.0, -0.8, 1.6, 0.0, -0.8, 1.6, 0.0, -0.8, 1.6,
                              0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -96,7 +96,7 @@ class WalkingSimulation(object):
         p.setJointMotorControlArray(bodyUniqueId=self.boxId,
                                     jointIndices=self.motor_id_list,
                                     controlMode=p.POSITION_CONTROL,
-                                    forces=[2.5]*len(self.motor_id_list),
+                                    forces=[10.0]*len(self.motor_id_list),
                                     targetPositions=tau)
         # import pdb; pdb.set_trace()
 
