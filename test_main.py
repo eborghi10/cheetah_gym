@@ -101,10 +101,10 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
         # # [optional] evaluate
         if evaluate is not None and validate_steps > 0 and step % validate_steps == 0:
             policy = lambda x: agent.select_action(x, decay_epsilon=False)
-            monitor_env = wrappers.Monitor(env, output + '/video/' + str(step), video_callable=lambda episode_id: True, force=True)
-            validate_reward = evaluate(monitor_env, policy, debug=False, visualize=False)
+            # monitor_env = wrappers.Monitor(env, output + '/video/' + str(step), video_callable=lambda episode_id: True, force=True)
+            validate_reward = evaluate(env, policy, debug=False, visualize=False)
             if debug: prYellow(f'[Evaluate] Step_{step:07d}: mean_reward:{validate_reward}')
-            monitor_env.close()
+            # monitor_env.close()
 
         # [optional] save intermideate model
         if episode % int(5) == 0:
