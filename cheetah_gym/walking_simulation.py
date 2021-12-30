@@ -29,7 +29,7 @@ class WalkingSimulation(object):
 
     def __init_simulator(self):
         robot_start_pos = [0, 0, self.robot_height]
-        p.connect(p.DIRECT)
+        p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
         p.setAdditionalSearchPath(os.path.dirname(os.path.realpath(__file__)))
         p.resetSimulation()
@@ -41,13 +41,13 @@ class WalkingSimulation(object):
         numHeightfieldRows = 256
         numHeightfieldColumns = 256
         heightfieldData = [0]*numHeightfieldRows*numHeightfieldColumns
-        for j in range(int(numHeightfieldColumns/2)):
-            for i in range(int(numHeightfieldRows/2)):
-                height = random.uniform(0, heightPerturbationRange)
-                heightfieldData[2*i+2*j*numHeightfieldRows] = height
-                heightfieldData[2*i+1+2*j*numHeightfieldRows] = height
-                heightfieldData[2*i+(2*j+1)*numHeightfieldRows] = height
-                heightfieldData[2*i+1+(2*j+1)*numHeightfieldRows] = height
+        # for j in range(int(numHeightfieldColumns/2)):
+        #     for i in range(int(numHeightfieldRows/2)):
+        #         height = random.uniform(0, heightPerturbationRange)
+        #         heightfieldData[2*i+2*j*numHeightfieldRows] = height
+        #         heightfieldData[2*i+1+2*j*numHeightfieldRows] = height
+        #         heightfieldData[2*i+(2*j+1)*numHeightfieldRows] = height
+        #         heightfieldData[2*i+1+(2*j+1)*numHeightfieldRows] = height
         terrainShape = p.createCollisionShape(
             shapeType=p.GEOM_HEIGHTFIELD,
             meshScale=[.05, .05, 1],

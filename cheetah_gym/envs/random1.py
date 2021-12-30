@@ -20,11 +20,14 @@ class Random1Env(gym.Env):
         # high = np.concatenate([high, np.ones([3], dtype=np.float32)])
         self.observation_space = gym.spaces.Box(-high, high, dtype=np.float32)
         self.initial_z = None
+        self.initial_x = None
+        self.initial_y = None
         self.last_x = None
         self.last_y = None
         self.ts = None
         self.last_velocities = None
         self.goal = None
+        self.inactive_count = None
 
     def step(self, action):
         action = np.insert(action,0,0)
@@ -57,17 +60,28 @@ class Random1Env(gym.Env):
         f4 = 5 * self.ts/(500.0*15)
         # angle_to_goal = (np.arctan2(self.goal[1] - base_position[1], self.goal[0] - base_position[0]) - euler_rot[0])
         # f5 = (angle_to_goal * np.asarray(imu_data[7]))
-        f5 = 100 * (base_position[0] - self.last_x)
-        f6 = -5 * ((base_position[1] - self.last_y)**2)
+        f5 = 100 * (base_position[0] - self.initial_x)
+        f6 = -5 * ((base_position[1] - self.initial_y)**2)
         # f7 = -0.02 * np.sum(np.asarray(self.last_velocities - leg_data["state"][12:24])**2)
         f2 = -1 * (np.sum(np.abs(euler_rot))) / (500*15)
         
         reward = f5 + f4 + f2
 
         # Done condition
-        done = base_position[2] < self.initial_z * 0.6 or abs(euler_rot[2]) > 60 or abs(euler_rot[1]) > 60 or abs(euler_rot[0]) > 60
+        if abs(self.last_x - base_position[0]) < 0.01 and abs(self.last_y - base_position[1]) < 0.01:
+            self.inactive_count += 1
+        else:
+            self.inactive_count = 0
+            self.last_y = base_position[1]
+            self.last_x = base_position[0]
+
+        done = (base_position[2] < self.initial_z * 0.6 
+        or abs(euler_rot[2]) > 60 
+        or abs(euler_rot[1]) > 60 
+        or abs(euler_rot[0]) > 60
+        or self.inactive_count > 100)
         self.last_velocities = leg_data["state"][0:12]
-        # self.last_y = base_position[1]
+        
 
         info = {}
 
@@ -90,6 +104,9 @@ class Random1Env(gym.Env):
         self.ts = 0
         self.last_velocities = leg_data["state"][0:12]
         self.initial_z = base_position[2] - 0.10
+        self.initial_x = base_position[0]
+        self.initial_y = base_position[1]
+        self.inactive_count = 0
 
         return state
 

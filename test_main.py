@@ -75,6 +75,7 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
     episode_reward = 0.
     last_step = 0
     observation = None
+    max_reward = -np.inf
     while step < num_iterations:
         # reset if it is the start of episode
         if observation is None:
@@ -99,7 +100,7 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
             agent.update_policy()
 
         # # [optional] evaluate
-        if evaluate is not None and validate_steps > 0 and step % validate_steps == 0:
+        if evaluate is not None and validate_steps > 0 and step % validate_steps == 0 and False:
             policy = lambda x: agent.select_action(x, decay_epsilon=False)
             # monitor_env = wrappers.Monitor(env, output + '/video/' + str(step), video_callable=lambda episode_id: True, force=True)
             validate_reward = evaluate(env, policy, debug=False, visualize=False)
@@ -109,7 +110,7 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
         # [optional] save intermideate model
         if episode % int(5) == 0:
             agent.save_model(output)
-
+        
         # update
         step += 1
         episode_steps += 1
@@ -128,9 +129,14 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
             # reset
             observation = None
             episode_steps = 0
+            if episode_reward > max_reward:
+                max_reward = episode_reward
+                agent.save_model(output + '/best')
             episode_reward = 0.
             episode += 1
             last_step = step
+
+    print('max_reward:{}'.format(max_reward))
 
 def test(num_episodes, agent, env, evaluate, model_path, visualize=True, debug=False):
 
@@ -152,7 +158,7 @@ if __name__ == "__main__":
     validate_steps = 2000
     max_episode_length = 500 * 15
     validate_episodes = 20
-    train_iter = 200000
+    train_iter = 2000000
 
     if seed > 0:
         np.random.seed(seed)
@@ -165,8 +171,6 @@ if __name__ == "__main__":
     evaluate = Evaluator(validate_episodes,
         validate_steps, "./cheetah_gym/agents/weights", max_episode_length=max_episode_length)
 
-    train(train_iter, agent, env, evaluate,
-        validate_steps, "./cheetah_gym/agents/weights", max_episode_length=max_episode_length, debug=True)
+    # train(train_iter, agent, env, evaluate, validate_steps, "./cheetah_gym/agents/weights", max_episode_length=max_episode_length, debug=True)
 
-    # test(validate_episodes, agent, env, evaluate, "./cheetah_gym/agents/weights",
-    #     visualize=False, debug=True)
+    test(validate_episodes, agent, env, evaluate, "./cheetah_gym/agents/weights", visualize=False, debug=True)
