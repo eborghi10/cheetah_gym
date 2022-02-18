@@ -29,11 +29,11 @@ class WalkingSimulation(object):
 
     def __init_simulator(self):
         robot_start_pos = [0, 0, self.robot_height]
-        p.connect(p.GUI)
+        p.connect(p.DIRECT)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
         p.setAdditionalSearchPath(os.path.dirname(os.path.realpath(__file__)))
         p.resetSimulation()
-        p.setTimeStep(1.0 / self.freq)
+        # p.setTimeStep(1.0 / self.freq) # Docs state that is recommended not to change it
         p.setGravity(0, 0, -9.81)
         p.resetDebugVisualizerCamera(0.2, 45, -30, [1, -1, 1])
 
@@ -195,3 +195,7 @@ class WalkingSimulation(object):
             renderer=p.ER_BULLET_HARDWARE_OPENGL)
         rgb_array = np.array(px)
         rgb_array = rgb_array[:, :, :3]
+        return rgb_array
+    
+    def __del__(self):
+        p.disconnect()

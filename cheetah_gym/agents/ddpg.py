@@ -23,8 +23,8 @@ class DDPG(object):
 
         # Create Actor and Critic Network TODO Make this a proper model
         net_cfg = {
-            'hidden1':512,
-            'hidden2':512,
+            'hidden1':300,
+            'hidden2':600,
             'init_w':0.003
         }
         self.actor = Actor(self.nb_states, self.nb_actions, **net_cfg)
@@ -148,14 +148,14 @@ class DDPG(object):
         )
 
 
-    def save_model(self,output):
+    def save_model(self,output, extra=""):
         torch.save(
             self.actor.state_dict(),
-            '{}/actor.pkl'.format(output)
+            '{}/actor'.format(output) + extra + '.pkl'
         )
         torch.save(
             self.critic.state_dict(),
-            '{}/critic.pkl'.format(output)
+            '{}/critic'.format(output) + extra + '.pkl'
         )
 
     def seed(self,s):

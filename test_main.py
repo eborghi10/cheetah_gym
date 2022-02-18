@@ -83,7 +83,7 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
             agent.reset(observation)
 
         # agent pick action ...
-        if step <= 100: #Warmup
+        if step <= 1000: #Warmup
             action = agent.random_action()
         else:
             action = agent.select_action(observation)
@@ -100,7 +100,7 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
             agent.update_policy()
 
         # # [optional] evaluate
-        if evaluate is not None and validate_steps > 0 and step % validate_steps == 0 and False:
+        if evaluate is not None and validate_steps > 0 and step % validate_steps == 0:
             policy = lambda x: agent.select_action(x, decay_epsilon=False)
             # monitor_env = wrappers.Monitor(env, output + '/video/' + str(step), video_callable=lambda episode_id: True, force=True)
             validate_reward = evaluate(env, policy, debug=False, visualize=False)
@@ -131,7 +131,7 @@ def train(num_iterations, agent, env,  evaluate, validate_steps, output, max_epi
             episode_steps = 0
             if episode_reward > max_reward:
                 max_reward = episode_reward
-                agent.save_model(output + '/best')
+                agent.save_model(output + '/best', extra=str(max_reward))
             episode_reward = 0.
             episode += 1
             last_step = step
@@ -171,6 +171,6 @@ if __name__ == "__main__":
     evaluate = Evaluator(validate_episodes,
         validate_steps, "./cheetah_gym/agents/weights", max_episode_length=max_episode_length)
 
-    # train(train_iter, agent, env, evaluate, validate_steps, "./cheetah_gym/agents/weights", max_episode_length=max_episode_length, debug=True)
+    train(train_iter, agent, env, evaluate, validate_steps, "./cheetah_gym/agents/weights", max_episode_length=max_episode_length, debug=True)
 
-    test(validate_episodes, agent, env, evaluate, "./cheetah_gym/agents/weights", visualize=False, debug=True)
+    #test(validate_episodes, agent, env, evaluate, "./cheetah_gym/agents/weights", visualize=False, debug=True)
