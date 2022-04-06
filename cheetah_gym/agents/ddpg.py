@@ -39,14 +39,14 @@ class DDPG(object):
         hard_update(self.critic_target, self.critic)
 
         #Create replay buffer
-        self.memory = SequentialMemory(limit=1000000, window_length=1)
+        self.memory = SequentialMemory(limit=10000, window_length=1)
         self.random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=0.15, mu=0.0, sigma=0.2)
 
         # Hyper-parameters
-        self.batch_size = 250
+        self.batch_size = 512
         self.tau = 0.001
         self.discount = 0.99
-        self.depsilon = 1.0 / 1500000
+        self.depsilon = 1.0 / 150000
 
         #
         self.epsilon = 1.0

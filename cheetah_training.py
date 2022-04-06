@@ -3,13 +3,28 @@ import gym.spaces
 import cheetah_gym
 import numpy as np
 import random
+from cheetah_gym.envs.normalized_env import NormalizedEnv
 
-env = gym.make('random1-v0')
-# state_space = gym.Box(low=np.array([-1.0, -2.0]), high=np.array([2.0, 4.0]), shape=(12,1) ,dtype=np.float32)
+env = NormalizedEnv(gym.make('random1-v0'))
+
 env.reset()
-while (True):
-    env.step(env.action_space.sample())
+done = False
+# print(env.observation_space, env.observation_space.shape)
+while (not done):
+    # env.render()
+    # action = np.zeros(env.action_space.shape)
+    # action[1] = 1
+    # action[4] = 1
+    action = env.action_space.sample()
+    observation, reward, done, info = env.step(action)
+    # print(len(observation), observation)
+    # print(reward)
+    # print(info)
+    input()
     pass
+print("DIED")
+input()
+exit()
 
 action_space_size = env.action_space.n
 state_space_size = env.observation_space.n

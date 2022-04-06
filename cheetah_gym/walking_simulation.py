@@ -9,10 +9,10 @@ from pybullet_utils import gazebo_world_parser
 
 
 class WalkingSimulation(object):
-    def __init__(self):
+    def __init__(self, visualize=False):
         self.terrain = "random1"
         self.get_last_vel = [0] * 3
-        self.robot_height = 0.40
+        self.robot_height = 0.40 #0.31
         self.motor_id_list = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14]
         self.init_new_pos = [0.0, -0.8, 1.6, 0.0, -0.8, 1.6, 0.0, -0.8, 1.6, 0.0, -0.8, 1.6,
                              0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
@@ -25,15 +25,16 @@ class WalkingSimulation(object):
         self.freq = 500.0  # Hz
         self.joint_kd = 0.2
 
-        self.__init_simulator()
+        self.__init_simulator(visualize=visualize)
 
-    def __init_simulator(self):
+    def __init_simulator(self, visualize=False):
         robot_start_pos = [0, 0, self.robot_height]
-        p.connect(p.DIRECT)
+        # p.connect(p.GUI if visualize else p.DIRECT)
+        p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
         p.setAdditionalSearchPath(os.path.dirname(os.path.realpath(__file__)))
         p.resetSimulation()
-        # p.setTimeStep(1.0 / self.freq) # Docs state that is recommended not to change it
+        # p.setTimeStep(1.0 / 60.) # Docs state that is recommended not to change it. Default is 240
         p.setGravity(0, 0, -9.81)
         p.resetDebugVisualizerCamera(0.2, 45, -30, [1, -1, 1])
 
@@ -55,9 +56,9 @@ class WalkingSimulation(object):
             heightfieldData=heightfieldData,
             numHeightfieldRows=numHeightfieldRows,
             numHeightfieldColumns=numHeightfieldColumns)
-        ground_id = p.createMultiBody(0, terrainShape)
-        p.resetBasePositionAndOrientation(ground_id, [0, 0, 0], [0, 0, 0, 1])
-        p.changeDynamics(ground_id, -1, lateralFriction=self.lateralFriction)
+        self.ground_id = p.createMultiBody(0, terrainShape)
+        p.resetBasePositionAndOrientation(self.ground_id, [0, 0, 0], [0, 0, 0, 1])
+        p.changeDynamics(self.ground_id, -1, lateralFriction=self.lateralFriction)
 
         # Disable visualization of cameras in pybullet GUI
         p.configureDebugVisualizer(p.COV_ENABLE_RGB_BUFFER_PREVIEW, 0)
@@ -68,8 +69,7 @@ class WalkingSimulation(object):
         p.configureDebugVisualizer(p.COV_ENABLE_SINGLE_STEP_RENDERING, 0)
         p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
 
-        self.boxId = p.loadURDF(
-            "urdf/mini_cheetah.urdf", robot_start_pos, useFixedBase=False, flags=p.URDF_USE_SELF_COLLISION)
+        self.boxId = p.loadURDF(r"cheetah_gym\urdf\mini_cheetah.urdf", robot_start_pos, useFixedBase=False, flags=p.URDF_USE_SELF_COLLISION)
         p.changeDynamics(self.boxId, 3, spinningFriction=self.spinningFriction)
         p.changeDynamics(self.boxId, 7, spinningFriction=self.spinningFriction)
         p.changeDynamics(self.boxId, 11, spinningFriction=self.spinningFriction)
@@ -88,15 +88,16 @@ class WalkingSimulation(object):
 
         p.setJointMotorControlArray(bodyUniqueId=self.boxId,
                                     jointIndices=self.motor_id_list,
-                                    controlMode=p.VELOCITY_CONTROL,
-                                    forces=[0]*len(self.motor_id_list))
+                                    controlMode=p.POSITION_CONTROL,
+                                    forces=[12.]*len(self.motor_id_list),
+                                    targetPositions=np.zeros((12,)))
 
     def simulation_step(self, tau):
         # set tau to simulator
         p.setJointMotorControlArray(bodyUniqueId=self.boxId,
                                     jointIndices=self.motor_id_list,
                                     controlMode=p.POSITION_CONTROL,
-                                    forces=[10.0]*len(self.motor_id_list),
+                                    forces=[12.]*len(self.motor_id_list),
                                     targetPositions=tau)
         # import pdb; pdb.set_trace()
 
@@ -106,8 +107,7 @@ class WalkingSimulation(object):
         joint_number_range = range(p.getNumJoints(robot))
         joint_states = p.getJointStates(robot, joint_number_range)
         joint_infos = [p.getJointInfo(robot, i) for i in joint_number_range]
-        joint_states, joint_name = \
-            zip(*[(j, i[1]) for j, i in zip(joint_states, joint_infos) if i[2] != p.JOINT_FIXED])
+        joint_states, joint_name = zip(*[(j, i[1], ) for j, i in zip(joint_states, joint_infos) if i[2] != p.JOINT_FIXED])
         joint_positions = [state[0] for state in joint_states]
         joint_velocities = [state[1] for state in joint_states]
         joint_torques = [state[3] for state in joint_states]
@@ -163,7 +163,9 @@ class WalkingSimulation(object):
         self.get_last_vel = [get_velocity[0][0], get_velocity[0][1], get_velocity[0][2]]
 
         # Contacts
-        contact_points = p.getContactPoints(self.boxId)
+        contact_points = [np.asarray(p.getContactPoints(bodyA=self.boxId, bodyB=self.ground_id, linkIndexA=i)).shape != (0,) for i in range(16)]
+        # print("CONTACT", contact_points)
+        # print("CONTACTS: ", temp)
 
         return imu_data, leg_data, base_pose[0], contact_points
 

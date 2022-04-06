@@ -46,8 +46,6 @@ class Evaluator(object):
                 episode_steps += 1
 
             if debug: prYellow('[Evaluate] #Episode{}: episode_reward:{}'.format(episode,episode_reward))
-            if (episode_reward > 20000):
-                input()
             result.append(episode_reward)
 
         result = np.array(result).reshape(-1,1)

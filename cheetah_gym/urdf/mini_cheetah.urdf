@@ -15,13 +15,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_body.dae"/>
+        <mesh filename="meshes\mini_body.dae"/>
       </geometry>
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_body.dae"/>
+        <mesh filename="meshes\mini_body.dae"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -41,13 +41,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="3.141592 0.0 1.5708" xyz="-0.055 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="3.141592 0 1.5708" xyz="-0.055 0 0"/>
     </collision>
@@ -66,13 +66,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
     </collision>
@@ -91,13 +91,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link.dae"/>
       </geometry>
       <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link_no_toe.dae"/>
       </geometry>
       <origin rpy="0 3.141592 0" xyz="0 0 0"/>
     </collision>
@@ -149,13 +149,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="0. 0. -1.5708" xyz="-0.055 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="0 0 -1.5708" xyz="-0.055 0 0"/>
     </collision>
@@ -174,13 +174,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
     </collision>
@@ -199,13 +199,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link.dae"/>
       </geometry>
       <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link_no_toe.dae"/>
       </geometry>
       <origin rpy="0 3.141592 0" xyz="0 0 0"/>
     </collision>
@@ -257,13 +257,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="0.0 0.0 1.5708" xyz="0.055 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="0 0 1.5708" xyz="0.055 0 0"/>
     </collision>
@@ -282,13 +282,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
     </collision>
@@ -307,13 +307,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link.dae"/>
       </geometry>
       <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link_no_toe.dae"/>
       </geometry>
       <origin rpy="0 3.141592 0" xyz="0 0 0"/>
     </collision>
@@ -365,13 +365,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="3.141592 0.0 -1.5708" xyz="0.055 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_abad.dae"/>
+        <mesh filename="meshes/mini_abad.dae"/>
       </geometry>
       <origin rpy="3.141592 0 -1.5708" xyz="0.055 0 0"/>
     </collision>
@@ -390,13 +390,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_upper_link.dae"/>
+        <mesh filename="meshes/mini_upper_link.dae"/>
       </geometry>
       <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
     </collision>
@@ -415,13 +415,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link.dae"/>
       </geometry>
       <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="/home/cheetah_gym/cheetah_gym/urdf/meshes/mini_lower_link.dae"/>
+        <mesh filename="meshes/mini_lower_link_no_toe.dae"/>
       </geometry>
       <origin rpy="0 3.141592 0" xyz="0 0 0"/>
     </collision>
