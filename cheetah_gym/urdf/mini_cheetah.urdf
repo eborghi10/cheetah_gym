@@ -15,13 +15,13 @@
     </inertial>
     <visual>
       <geometry>
-        <mesh filename="meshes\mini_body.dae"/>
+        <mesh filename="meshes/mini_body.dae"/>
       </geometry>
       <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="meshes\mini_body.dae"/>
+        <mesh filename="meshes/mini_body.dae"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>

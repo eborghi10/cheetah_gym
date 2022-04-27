@@ -26,6 +26,7 @@ class Random1Env(gym.Env):
         self.goal = None
         self.speed = None
         self.states = deque([np.zeros((38,)) for _ in range(10)], maxlen=10)
+        self.last_position = None
 
     def step(self, action):
         # action = np.insert(action,0,0)
@@ -50,7 +51,7 @@ class Random1Env(gym.Env):
                 leg_return,
                 base_return,
                 imu_return
-        ])  # 12-4, 12-4, 3, 10
+        ])  # 1, 12, 12, 3, 10
 
         # Reward function        
         # euler_rot = R.from_quat(imu_data[3:7]).as_euler('zyx', degrees=True)
@@ -58,10 +59,17 @@ class Random1Env(gym.Env):
         # angle_to_goal = (np.arctan2(self.goal[1] - base_position[1], self.goal[0] - base_position[0]) - euler_rot[0])
         # f5 = (angle_to_goal * np.asarray(imu_data[7]))
         distance = np.linalg.norm(base_return[0:2] - np.asarray(self.goal[0:2])) # distance
+        speed_curr = (base_return[0:2] - self.last_position[0:2]) / 240.0 # speed
+        cosine = np.dot(speed_curr, self.speed) / (np.linalg.norm(speed_curr) * np.linalg.norm(self.speed))
+        speed_diff = speed_curr
+        speed_diff[0] = speed_curr[0] - self.speed
+        cosine_reward = np.linalg.norm(speed_diff) * 100 * cosine / 240
+        self.last_position = base_return
         self.goal[0] += self.speed / 240.0
         # rotation = -2 * (np.sum(np.abs(euler_rot))) / (240*15) # deviation in orientation
+        origin_distance = np.linalg.norm(base_return[0:2] - np.asarray(self.initial_position)[0:2]) / 240
         
-        reward = (15 - distance) / 240
+        reward =  1 / distance
         # reward = time_alive - (distance/240.0)
         # print("Distance reward: ", f5)
         # print("Euler deviation reward: ", f2)
@@ -89,8 +97,10 @@ class Random1Env(gym.Env):
         self.sim.reset_robot()
         imu_data, leg_data, base_position, contact_points = self.sim.get_state()
         self.goal = np.asarray(base_position)
-        self.goal[0] += 2.5
+        # self.goal[0] += 2.5
         self.speed = max(np.random.random_sample(), 0.5) * 5 * 3.6 # m/s
+        self.last_position = np.asarray(base_position)
+        # self.speed = 0
         # self.goal = np.random.rand(3,)
         # self.goal[2] = self.initial_z + (np.random.rand() * 0.3)
         # self.goal = self.goal/np.linalg.norm(self.goal)
