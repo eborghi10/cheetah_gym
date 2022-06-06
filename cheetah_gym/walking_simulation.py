@@ -29,8 +29,8 @@ class WalkingSimulation(object):
 
     def __init_simulator(self, visualize=False):
         robot_start_pos = [0, 0, self.robot_height]
-        p.connect(p.GUI if visualize else p.DIRECT)
-        # p.connect(p.GUI)
+        # p.connect(p.GUI if visualize else p.DIRECT)
+        p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
         p.setAdditionalSearchPath(os.path.dirname(os.path.realpath(__file__)))
         p.resetSimulation()
