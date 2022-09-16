@@ -12,31 +12,34 @@ class WalkingSimulation(object):
     def __init__(self, visualize=False):
         self.terrain = "random1"
         self.get_last_vel = [0] * 3
-        self.robot_height = 0.40 #0.31
+        self.robot_height = 0.31 #0.31
         self.motor_id_list = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14]
         self.init_new_pos = [0.0, -0.8, 1.6, 0.0, -0.8, 1.6, 0.0, -0.8, 1.6, 0.0, -0.8, 1.6,
                              0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-        self.lateralFriction = 1.0
-        self.spinningFriction = 0.0065
+        # self.lateralFriction = 1.0 #Original
+        self.lateralFriction = 3.0
+        # self.spinningFriction = 0.0065 # Original
+        self.spinningFriction = 0.3
         self.stand_kp = 100.0
         self.stand_kd = 1.0
         self.joint_kp = 10.0
         self.freq = 500.0  # Hz
         self.joint_kd = 0.2
+        self.goal_id = -1
 
         self.__init_simulator(visualize=visualize)
 
     def __init_simulator(self, visualize=False):
         robot_start_pos = [0, 0, self.robot_height]
-        # p.connect(p.GUI if visualize else p.DIRECT)
-        p.connect(p.GUI)
+        p.connect(p.GUI if visualize else p.DIRECT)
+        # p.connect(p.GUI)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())  # optionally
         p.setAdditionalSearchPath(os.path.dirname(os.path.realpath(__file__)))
         p.resetSimulation()
         # p.setTimeStep(1.0 / 60.) # Docs state that is recommended not to change it. Default is 240
         p.setGravity(0, 0, -9.81)
-        p.resetDebugVisualizerCamera(0.2, 45, -30, [1, -1, 1])
+        p.resetDebugVisualizerCamera(0.2, 0, 0, [0, -0.5, 0.2])
 
         heightPerturbationRange = 0.06
         numHeightfieldRows = 256
@@ -103,6 +106,9 @@ class WalkingSimulation(object):
 
         p.stepSimulation()
 
+    def update_goal(self, goal):
+        self.goal_id = p.addUserDebugPoints(goal, [[1, 0, 0]], 10, replaceItemUniqueId=self.goal_id)
+
     def __get_motor_joint_states(self, robot):
         joint_number_range = range(p.getNumJoints(robot))
         joint_states = p.getJointStates(robot, joint_number_range)
@@ -163,9 +169,8 @@ class WalkingSimulation(object):
         self.get_last_vel = [get_velocity[0][0], get_velocity[0][1], get_velocity[0][2]]
 
         # Contacts
-        contact_points = [np.asarray(p.getContactPoints(bodyA=self.boxId, bodyB=self.ground_id, linkIndexA=i)).shape != (0,) for i in range(16)]
+        contact_points = [np.asarray(p.getContactPoints(bodyA=self.boxId, bodyB=self.ground_id, linkIndexA=i)).shape != (0,) for i in range(-1, 16)]
         # print("CONTACT", contact_points)
-        # print("CONTACTS: ", temp)
 
         return imu_data, leg_data, base_pose[0], contact_points
 
