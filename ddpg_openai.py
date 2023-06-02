@@ -8,7 +8,7 @@ from stable_baselines3.common.vec_env import VecNormalize
 from stable_baselines3.common.env_util import make_vec_env
 import os
 
-model_name = "PPO_distance_divided"
+model_name = "DDPG_distance_divided"
 models_dir = "models/" + model_name
 logdir = "logs"
 
@@ -18,7 +18,8 @@ if not os.path.exists(models_dir):
 if not os.path.exists(logdir):
     os.makedirs(logdir)
 
-env = make_vec_env("random1-v0", n_envs=1)
+env_kwargs = {"visualize":True, "past_steps":5}
+env = make_vec_env("random1-v0", n_envs=1, env_kwargs=env_kwargs)
 # env = VecNormalize(env, norm_obs=True, norm_reward=True, clip_obs=10000., clip_reward=10000.)
 # env = VecNormalize.load(f"{models_dir}/env_normalization.pkl", env)
 

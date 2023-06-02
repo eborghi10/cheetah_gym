@@ -4,6 +4,11 @@ setup(name='cheetah_gym',
       version='0.0.1',
       install_requires=[
         'gym',
-        'pybullet'
+        'pybullet',
+        'torch',
+        'numpy',
+        'opencv-python',
+        'scipy',
+        'stable-baselines3==1.8.0'
       ]
 )
